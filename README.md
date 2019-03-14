@@ -1,2 +1,2 @@
-# chrome-bravado
-A chrome extension for replacing your new tab page with your most challenging task for the day.
+# Bravado
+Bravado is a chrome extension for replacing your New Tab page with a daily view of your most challenging tasks. 
