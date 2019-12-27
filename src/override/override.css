@@ -64,3 +64,7 @@ body {
   background: transparent;
   resize: none;
 }
+
+.item:hover {
+  cursor: pointer;
+}

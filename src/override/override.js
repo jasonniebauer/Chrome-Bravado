@@ -113,6 +113,25 @@ readStore(key, d => {
   // Check if we got data from the chrome sync storage, if so, no fallback is needed
   if(d) {
     data = d
+    console.log(data)
+    
+    let itemsList = document.querySelector('#itemsList');
+
+    for (var i=0;i<data.content.length;i++) {
+
+      let container = document.createElement('div');
+
+      let input = document.createElement('input');
+      let label = document.createElement('label');
+      input.setAttribute('type', 'checkbox');
+      label.innerText = ' ' + data.content[i];
+      label.setAttribute('class', 'item');
+      container.appendChild(input);
+      container.appendChild(label);
+
+      itemsList.appendChild(container)
+      console.log(data.content[i])
+    }
   }
   else
   {
@@ -183,6 +202,57 @@ function start(data) {
     updateStore(key, obj)
   })
 
+  // Set up the input field
+  let f = document.querySelector('#field');
+
+  f.addEventListener('keyup', e => {
+    // Enter key is pressed
+    if (e.keyCode == 13) {
+      let itemsList = document.getElementById('itemsList');
+      let container = document.createElement('div');
+
+      let strippedValue = field.value.replace('.','');
+      let input = document.createElement('input');
+      let label = document.createElement('label');
+      input.setAttribute('type', 'checkbox');
+      label.innerText = ' ' + strippedValue;
+      label.setAttribute('class', 'item');
+      container.appendChild(input);
+      container.appendChild(label);
+
+      itemsList.appendChild(container)
+
+
+      taskList = document.querySelector('#itemsList').childNodes;
+
+      let items = []
+
+      for (var i=0;i<taskList.length;i++) {
+        items.push(taskList[i].querySelector('label').innerText);
+      }
+
+
+      let obj = Object.assign(data, {
+        content: items
+      })
+  
+      updateStore(key, obj)
+    }
+  })
+  // f.onkeypress = function(e){
+  //   // Enter key is pressed
+  //   if (e.keyCode == 13) {
+
+  //     let obj = Object.assign(data, {
+  //       content: {
+  //         'task': f.value
+  //       }
+  //     })
+  
+  //     updateStore(key, obj)
+  //   }
+  // }
+
   // Allow updating content between tabs
   let windowIsActive
 
@@ -247,6 +317,15 @@ document.body.addEventListener('keyup', function(e){
     let itemsList = document.getElementById('itemsList');
     let container = document.createElement('div');
 
+    // strippedValue = field.value.replace('.','');
+    // let input = document.createElement('input');
+    // let label = document.createElement('label');
+    // input.setAttribute('type', 'checkbox');
+    // label.innerText = ' ' + strippedValue;
+    // label.setAttribute('class', 'item');
+    // container.appendChild(input);
+    // container.appendChild(label);
+
     // Tasks
     if (field.value.startsWith('.')) {
       strippedValue = field.value.replace('.','');
@@ -278,13 +357,13 @@ document.body.addEventListener('keyup', function(e){
       return false;
     }
     else {
-      let p = document.createElement('p');
-      p.innerText = field.value;
-      itemsList.appendChild(p);
+      // let p = document.createElement('p');
+      // p.innerText = field.value;
+      // itemsList.appendChild(p);
     }
 
 
-    itemsList.appendChild(container)
+    // itemsList.appendChild(container)
 
     field.value = ''
     field.focus();
