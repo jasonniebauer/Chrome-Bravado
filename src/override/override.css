@@ -68,3 +68,7 @@ body {
 .item:hover {
   cursor: pointer;
 }
+
+.checkbox {
+  margin-right: 0.5rem;
+}

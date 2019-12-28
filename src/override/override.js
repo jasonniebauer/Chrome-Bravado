@@ -124,7 +124,11 @@ readStore(key, d => {
       let input = document.createElement('input');
       let label = document.createElement('label');
       input.setAttribute('type', 'checkbox');
-      label.innerText = ' ' + data.content[i];
+      input.classList.add('checkbox');
+      if (data.content[i].checked) {
+        input.checked = true;
+      }
+      label.innerText = data.content[i].label;
       label.setAttribute('class', 'item');
       container.appendChild(input);
       container.appendChild(label);
@@ -215,7 +219,8 @@ function start(data) {
       let input = document.createElement('input');
       let label = document.createElement('label');
       input.setAttribute('type', 'checkbox');
-      label.innerText = ' ' + strippedValue;
+      input.classList.add('checkbox');
+      label.innerText = strippedValue;
       label.setAttribute('class', 'item');
       container.appendChild(input);
       container.appendChild(label);
@@ -228,7 +233,11 @@ function start(data) {
       let items = []
 
       for (var i=0;i<taskList.length;i++) {
-        items.push(taskList[i].querySelector('label').innerText);
+        item = {
+          'checked': false,
+          'label': taskList[i].querySelector('label').innerText
+        }
+        items.push(item);
       }
 
 
@@ -237,21 +246,22 @@ function start(data) {
       })
   
       updateStore(key, obj)
-    }
-  })
-  // f.onkeypress = function(e){
-  //   // Enter key is pressed
-  //   if (e.keyCode == 13) {
 
-  //     let obj = Object.assign(data, {
-  //       content: {
-  //         'task': f.value
-  //       }
-  //     })
-  
-  //     updateStore(key, obj)
-  //   }
-  // }
+      let actionItems = document.querySelectorAll('input[type="checkbox"]');
+
+      for (var i=0;i<actionItems.length;i++) {
+        actionItems[i].addEventListener('change', function(){
+          if (this.checked){
+            // this.parentNode.remove();
+            this.nextSibling.style.textDecoration = 'line-through';
+
+          } else {
+            console.log('unchecked');
+          }
+        });
+      }
+    }
+  });
 
   // Allow updating content between tabs
   let windowIsActive
@@ -371,3 +381,4 @@ document.body.addEventListener('keyup', function(e){
 });
 
 // text-decoration: line-through;
+
